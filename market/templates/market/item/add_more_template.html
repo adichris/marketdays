@@ -1,0 +1,52 @@
+{% extends 'base/base.html' %}
+{% load i18n static %}
+{% block extra_head %}
+    <script src="{% static 'vendor/htmx/htmx.min.js' %}"></script>
+{% endblock %}
+{% block body %}
+<div class="container">
+    <div class="row my-3">
+        <div class="col">
+             <nav style="--bs-breadcrumb-divider: url(&#34;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8'%3E%3Cpath d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='%236c757d'/%3E%3C/svg%3E&#34;);" aria-label="breadcrumb">
+              <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'home:home' %}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'market:market_list' %}">Market List</a></li>
+                <li class="breadcrumb-item"><a href="{{ market.get_absolute_url }}">{{ market }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">New Market Items</li>
+              </ol>
+            </nav>
+        </div>
+    </div>
+    <div class="row my-3">
+        <div class="col-md-8 col-lg-7 mx-auto bg-light-subtle rounded p-3">
+            <h3 class="text-center">Add Market Item</h3>
+        </div>
+
+         <div class="col-md-8 col-lg-7 mt-2 mx-auto rounded">
+             <img src="" alt="" class="img-fluid rounded" id="previewImg">
+        </div>
+
+        <div class="col-md-8 col-lg-7 mx-auto mt-1 mb-5" id="itemcreateparent" hx-get="{% url 'market:item_add' market_pk=market_pk %}" hx-trigger="load">
+            <p class="text-center">Loading ... <span class="spinner-border spinner-border-sm"></span></p>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function animateLoading(theTag) {
+        theTag.innerHTML = `<span class="spinner-border spinner-border-sm"></span>`
+    }
+        const image = document.getElementById("previewImg");
+        function displayImage(imageInputEl) {
+            const file = imageInputEl.files[0];
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                image.src = reader.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+</script>
+{% endblock %}

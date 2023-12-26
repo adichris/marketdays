@@ -1,0 +1,13 @@
+<div class="alert alert-success" role="alert">
+    <div class="d-flex gap-3">
+        <i class="bi bi-check"></i>
+        <div class="">
+            <h4>{{ market_name }}</h4>
+            <a class="alert-link" href="{{ market_detail_url }}">Edit and View Details here <i class="bi bi-link"></i></a>
+        </div>
+    </div>
+</div>
+
+<div class="">
+    <a href="{% url 'market:market_create' %}" class="btn btn-outline-success"> <i class="bi bi-plus-circle"></i> Add Another Market</a>
+</div>

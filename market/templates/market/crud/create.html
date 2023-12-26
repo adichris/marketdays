@@ -1,0 +1,68 @@
+{% load i18n crispy_forms_filters %}
+{% url 'market:market_create_forms' as submit2 %}
+<style>
+   @keyframes fade-in {
+     from { opacity: 0; }
+   }
+
+   @keyframes fade-out {
+     to { opacity: 0; }
+   }
+
+   @keyframes slide-from-right {
+     from { transform: translateX(90px); }
+   }
+
+   @keyframes slide-to-left {
+     to { transform: translateX(-90px); }
+   }
+
+   .slide-it {
+     view-transition-name: slide-it;
+   }
+
+   ::view-transition-old(slide-it) {
+     animation: 180ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+     600ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
+   }
+   ::view-transition-new(slide-it) {
+     animation: 420ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
+     600ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
+   }
+</style>
+<div class="slide-it" hx-swap="innerHTML transition:true">
+
+    <div class="d-flex justify-content-center align-items-center flex-column mb-2">
+        <p class="text-center lead">Step {{ wizard.steps.step1 }} of {{ wizard.steps.count }}</p>
+        <div  class="progress w-100" role="progressbar" aria-label="Animated striped" aria-valuenow="{% if wizard.steps.index == 0 %} 30% {% elif wizard.steps.index == 1 %} 65% {% elif wizard.steps.index == 2 %} 95% {% endif %}" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: {% if wizard.steps.index == 0 %} 30% {% elif wizard.steps.index == 1 %} 65% {% elif wizard.steps.index == 2 %} 95% {% endif %}"></div>
+        </div>
+    </div>
+    <form action="{% url 'market:market_create_forms' %}" enctype="multipart/form-data" method="post" class="card card-body ">
+        {% csrf_token %}
+        {{ wizard.management_form }}
+        {{ wizard.form|crispy }}
+        <div class="d-flex flex-row gap-4 align-items-center justify-content-end bg-light-subtle p-2 rounded">
+            {% if wizard.steps.prev %}
+                <button hx-encoding="multipart/form-data" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}"
+                        hx-post="{{ submit2 }}" hx-target="#marketCreatesteps"  class="d-inline-flex align-items-center btn btn-outline-secondary justify-content-between flex-row justify-content-center gap-3">
+                    <span>{% translate 'First Step' %}</span>
+                    <i class="bi bi-1-circle"></i>
+                </button>
+                <button hx-encoding="multipart/form-data" name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}" hx-post="{{ submit2 }}" hx-target="#marketCreatesteps" class="d-inline-flex align-items-center btn btn-outline-secondary justify-content-between flex-row justify-content-center gap-3">
+                    <span>{% translate 'Back' %}</span>
+                    <i class="bi bi-arrow-left"></i>
+                </button>
+            {% endif %}
+
+            <button  value="{% translate "submit" %}" hx-encoding="multipart/form-data" hx-post="{{ submit2 }}" type="submit" hx-target="#marketCreatesteps"
+                    class="btn btn-primary gap-2">
+                {% if wizard.steps.last == wizard.steps.current %}
+                    {% translate 'Submit' %} <i class="bi bi-send"></i>
+                {% else %}
+                    {% translate 'Next' %} <i class="bi bi-arrow-right"></i>
+                {% endif %}
+            </button>
+        </div>
+    </form>
+</div>

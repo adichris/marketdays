@@ -1,0 +1,22 @@
+{% extends 'base/base.html' %}
+{% load i18n static %}
+{% block extra_head %}
+    <script src="{% static 'vendor/htmx/htmx.min.js' %}"></script>
+{% endblock %}
+{% block body %}
+	<div class="container">
+        <div class="row">
+            <div class="col">
+                <h1>New Market</h1>
+            </div>
+        </div>
+
+
+        <div class="row my-5">
+            <div hx-get="{% url 'market:market_create_forms' %}" hx-trigger="load" class="col col-md-8 col-lg-8 mx-auto" id="marketCreatesteps" >
+
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

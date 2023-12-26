@@ -1,0 +1,44 @@
+{% extends 'base/base.html' %}
+{% load i18n crispy_forms_filters %}
+
+{% block body %}
+    <div class="container">
+        <div class="row my-5">
+            <div class="col col-md-8 col-lg-7 mx-auto">
+                <form action="" method="post" class="card card-body" enctype="multipart/form-data">
+                    <h1 class="h4 text-center">Update <span id="objectname">{{ object.name }}</span></h1>
+                    <img src="{{ object.image.url }}" class="my-3 img-fluid rounded shadow-sm" alt="{{ object.name }}" id="previewImg">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <div class="d-flex justify-content-end align-items-center gap-4">
+                        <button type="reset" class="btn btn-outline-secondary d-inline-flex gap-2 items-center"><span>Reset</span> <i class="bi bi-arrow-clockwise"></i></button>
+                        <button type="submit" class="btn btn-primary d-inline-flex gap-2 items-center"><span>Update</span> <i class="bi bi-send"></i></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+        const imageInputEl = document.getElementById('{{ form.image.id_for_label }}');
+
+        function displayImage() {
+            const file = imageInputEl.files[0];
+            const reader = new FileReader();
+            reader.onloadend = function() {
+                const image = document.getElementById("previewImg");
+                image.src = reader.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        imageInputEl.addEventListener("change", displayImage);
+        const objectNameElm = document.getElementById("objectname");
+        document.getElementById("{{ form.name.id_for_label }}").addEventListener("change", function (ev){
+            objectNameElm.innerText = ev.target.value;
+        })
+    </script>
+{% endblock %}
+

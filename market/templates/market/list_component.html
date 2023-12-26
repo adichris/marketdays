@@ -1,0 +1,25 @@
+<div class="row">
+    <div class="col">
+        {% if q %}
+            <p class="lead"><b>"{{ q }}"</b> matches {{ market_list.count }} market/s</p>
+        {% endif %}
+    </div>
+</div>
+
+<div class="row my-5">
+    {% for market in market_list %}
+        <div class="col-11 mx-auto mx-md-0 col-md-6 col-lg-4 space">
+            <div class="card my-4">
+                <img src="{{ market.image.url }}" class="card-img-top" alt="{{ market.name }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ market.name }}</h5>
+                    <p class="card-text">{{ market.description }}</p>
+                     <a href="{{ market.get_absolute_url }}" class="btn btn-outline-primary">view</a>
+                </div>
+                <div class="card-footer">
+                    <small class="text-body-secondary">Last updated {{ market.date_modified|timesince }} ago</small>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

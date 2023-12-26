@@ -1,0 +1,29 @@
+{% load i18n static crispy_forms_tags %}
+    {% if success %}
+
+        <div class="alert alert-success my-3 rounded-0 border-5 border-top-0 border-bottom-0 border-end-0" role="status" >
+            <div class="">
+                <i class="bi bi-check-circle me-2" ></i>
+                <strong class="me-auto">Added {{ name }} market item</strong>
+            </div>
+            <div>{{ message }}</div>
+        </div>
+    {% endif %}
+
+<form action="{% url 'market:item_add' market_pk=market_pk %}" class=" bg-light-subtle rounded p-3 " method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form|crispy }}
+
+    <div class="d-flex justify-content-between gap-4 align-items-center">
+        <button  class="btn btn-outline-secondary" type="reset" >Reset to initial <span class="bi bi-arrow-repeat"></span></button>
+
+         <div class="d-flex justify-content-end gap-4 align-items-center">
+            <button hx-encoding="multipart/form-data" onclick="animateLoading(this)" name="complete" value="plus1" hx-post="{% url 'market:item_add' market_pk=market_pk %}" hx-target="#itemcreateparent" class="btn btn-primary" type="submit" >Save and Add Another <span class="bi bi-plus-circle"></span></button>
+            <button hx-encoding="multipart/form-data" onclick="animateLoading(this)" name="complete" value="done" hx-post="{% url 'market:item_add' market_pk=market_pk %}" hx-target="#itemcreateparent" class="btn btn-success" type="submit">
+                Submit
+                <span class="dj-button-decorator"><i class="dj-icon bi bi-send"></i></span>
+            </button>
+        </div>
+    </div>
+
+</form>
