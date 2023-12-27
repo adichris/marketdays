@@ -21,7 +21,7 @@ from django.conf import settings
 from market.views import ContactUsPage
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('marketdays-admin/', admin.site.urls),
     path('/', admin.site.urls),
     path('contact-us/', ContactUsPage.as_view(), name='contactus'),
     path('', include('home.url')),

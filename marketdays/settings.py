@@ -156,3 +156,9 @@ CACHES = {
         "LOCATION": "marketdays_cache",
     }
 }
+
+
+try:
+    from .local import *
+except ModuleNotFoundError:
+    pass
