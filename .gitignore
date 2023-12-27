@@ -342,3 +342,4 @@ $RECYCLE.BIN/
 .idea
 /**/migrations/*
 /*/migrations/*
+marketdays/local.py
