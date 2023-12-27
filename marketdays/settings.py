@@ -46,7 +46,7 @@ INSTALLED_APPS = [
     'formset',
     'djmoney',
     'rest_framework',
-    
+ 
 
 ]
 
@@ -74,6 +74,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'marketdays.urls'
+
 
 TEMPLATES = [
     {
@@ -164,3 +165,9 @@ try:
     from .local import *
 except ModuleNotFoundError:
     pass
+
+if not DEBUG:
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
+STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
