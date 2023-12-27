@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'formset',
     'djmoney',
     'rest_framework',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
 
 ]
 
