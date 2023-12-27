@@ -1,3 +1,4 @@
+from typing import Any
 from django.core.validators import MinValueValidator
 from django.db import models
 from django.shortcuts import reverse
@@ -8,13 +9,24 @@ from djmoney.money import Money
 
 
 def upload_location(instance, filename):
-    return os.path.join("media", instance._meta.app_label, instance.name, filename)
+    return os.path.join("media", "market" ,instance._meta.app_label, instance.name, filename)
 
 
 class MarketManager(models.Manager):
     def search(self, query):
         return self.filter(models.Q(name__icontains=query) | models.Q(description__icontains=query) | models.Q(type__icontains=query))
-
+   
+    def search_filter(self, city, town, district, region):
+        if district and region:
+            return self.filter(
+                    models.Q(city__icontains=city or '') & 
+                    models.Q(town__icontains=town or '') & 
+                    models.Q(district__icontains=district) & 
+                    models.Q(region__icontains=region)
+                    )
+        return self.filter(
+            models.Q(city__icontains=city or '') & 
+            models.Q(town__icontains=town or ''))
 
 class Market(models.Model):
     name = models.CharField(max_length=120)

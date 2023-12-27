@@ -1,7 +1,8 @@
-from django.shortcuts import reverse, redirect, get_object_or_404
+from typing import Any
+from django.shortcuts import reverse, get_object_or_404
 from django.shortcuts import render
-from django.views.generic import ListView, DetailView, DateDetailView, UpdateView, DeleteView, TemplateView, CreateView
-from .models import MarketCalendar, Market, MarketItem
+from django.views.generic import ListView, DetailView, UpdateView, TemplateView, CreateView
+from .models import Market, MarketItem
 from formtools.wizard.views import SessionWizardView
 from .form import MarketForm, MarketCalendarForm, MarketItemForm
 from django.conf import settings
@@ -10,21 +11,39 @@ from django.contrib import messages
 import os
 from rest_framework import viewsets
 from .serializer import MarketSerializer, MarketItemSerializer
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
 
 
-class MarketListView(ListView):
-    model = Market
+class MarketListView(TemplateView):
     template_name = 'market/list.html'
     context_object_name = 'market_list'
+
 
 
 class MarketListPage(ListView):
     model = Market
     template_name = 'market/list_component.html'
     context_object_name = 'market_list'
+    paginate_by = 25
 
     def get_queryset(self):
-        return Market.objects.search(query=self.request.GET.get('q') or '')
+        query = self.request.GET.get('q')
+        if query:
+            return Market.objects.search(query)
+        
+        region = self.request.GET.get("region")
+        town = self.request.GET.get("town")
+        district = self.request.GET.get("district")
+        city = self.request.GET.get("city")
+        if region or city or town or district:
+            print(city, town, region, district)
+            returns =  Market.objects.search_filter(city, town, district, region)
+            print(returns)
+            return returns
+        
+        return super().get_queryset()
+
 
     def get_context_data(self, **kwargs):
         context = super(MarketListPage, self).get_context_data(**kwargs)
@@ -45,7 +64,7 @@ class MarketDetailView(DetailView):
         return ctx
 
 
-class MarketCreationView(SessionWizardView):
+class MarketCreationView(LoginRequiredMixin, SessionWizardView):
     form_list = [
         MarketForm, MarketCalendarForm, MarketItemForm
     ]
@@ -65,7 +84,7 @@ class MarketCreationView(SessionWizardView):
         return render(self.request, "market/crud/create-success.html", ctx)
 
 
-class MarketUpdateView(UpdateView):
+class MarketUpdateView(LoginRequiredMixin, UpdateView):
     model = Market
     form_class = MarketForm
     template_name = "market/crud/update.html"
@@ -74,7 +93,7 @@ class MarketUpdateView(UpdateView):
     slug_url_kwarg = "slug"
 
 
-class MarketCreationTemplateView(TemplateView):
+class MarketCreationTemplateView(LoginRequiredMixin, TemplateView):
     template_name = "market/creation.html"
 
     def get_context_data(self, **kwargs):
@@ -84,7 +103,7 @@ class MarketCreationTemplateView(TemplateView):
         return content
 
 
-class MarketItemCreation(CreateView):
+class MarketItemCreation(LoginRequiredMixin, CreateView):
     form_class = MarketItemForm
     template_name = "market/item/create_more.html"
 
@@ -124,12 +143,13 @@ class MarketItemCreation(CreateView):
         return super().form_valid(form)
 
 
+@login_required
 def success_added_marketitems(request, marketitem_pk):
     marketitem = get_object_or_404(MarketItem, pk=marketitem_pk)
     return render(request, "market/item/success-added-more.html", {"marketitem": marketitem})
 
 
-class AddMoreMarketItemView(TemplateView):
+class AddMoreMarketItemView(LoginRequiredMixin, TemplateView):
     template_name = "market/item/add_more_template.html"
 
     def get_context_data(self, **kwargs):
@@ -140,7 +160,7 @@ class AddMoreMarketItemView(TemplateView):
         return context
 
 
-class MarketItemUpdateView(UpdateView):
+class MarketItemUpdateView(LoginRequiredMixin, UpdateView):
     model = MarketItem
     form_class = MarketItemForm
     template_name = "market/crud/update.html"
@@ -164,3 +184,12 @@ class MarketViewSet(viewsets.ModelViewSet):
 class MarketItemViewSet(viewsets.ModelViewSet):
     queryset = MarketItem.objects.all()
     serializer_class = MarketItemSerializer
+
+
+class ContactUsPage(TemplateView):
+    template_name = "market/contactus.html"
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        context =  super().get_context_data(**kwargs)
+        context["title"] = "Contacts"
+        return context

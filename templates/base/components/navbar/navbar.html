@@ -1,5 +1,7 @@
 {% url 'market:market_list' as market_list %}
+{% url 'market:market_create' as addmarket %}
 {% url 'home:home' as home %}
+{% url 'contactus' as contactus %}
 <nav class="navbar navbar-expand-lg bg-body-tertiary sticky-md-top shadow-sm" style="z-index: 100;">
     <div class="container-fluid align-items-baseline  justify-content-between">
         <a class="navbar-brand d-none  d-lg-inline" href="{% url 'home:home' %}">Ghana Market Days</a>
@@ -19,8 +21,9 @@
                         <a class="nav-link {% if request.path == market_list %}active" aria-current="page"{% else %}"{% endif %}  href="{{ market_list }}">Markets</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Contacts</a>
+                        <a class="nav-link {% if request.path == contactus %}active" aria-current="page"{% else %}"{% endif %} href="{{ contactus }}">Contacts</a>
                     </li>
+                    {% comment %}
                     <li class="nav-item">
                         <a class="nav-link" href="#">Abouts</a>
                     </li>
@@ -42,9 +45,19 @@
                     <li class="nav-item">
                         <a class="nav-link disabled" aria-disabled="true">Advertise</a>
                     </li>
+                    {% endcomment %}
                 </ul>
             </div>
         </div>
+        
+        <div class="d-flex gap-2">
+            <div class="">
+                <a onclick="animateLoading(this)" href="{{ addmarket }}" class="btn btn{% if request.path != addmarket %}-outline{% endif %}-primary rounded-5" aria-label="Add Market" title="Add Market"><i class="bi bi-bag-plus"></i></a>
+                {% if request.user.is_authenticated %}
+                <a onclick="animateLoading(this)" href="{% url 'account:logout' %}" class="btn btn-outline-warning rounded-5" aria-label="Logout" title="Logout"><i class="bi bi-box-arrow-right"></i></a>
+                {% endif %}
+            </div>
+
             <div class="nav-item dropdown">
                 <svg xmlns="http://www.w3.org/2000/svg" style="display: none;" width="2rem" height="2rem">
                     <symbol id="circle-half" viewBox="0 0 16 16">
@@ -106,7 +119,7 @@
                     </li>
                 </ul>
             </div>
-
+        </div>
 
     </div>
 </nav>

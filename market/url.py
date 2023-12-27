@@ -4,7 +4,7 @@ from .views import (
     MarketListView, MarketDetailView, MarketCreationView, MarketCreationTemplateView,
     MarketListPage, MarketUpdateView, MarketItemUpdateView, AddMoreMarketItemView,
     MarketItemDetailView, MarketItemCreation, success_added_marketitems,
-    MarketItemViewSet, MarketViewSet,
+    MarketItemViewSet, MarketViewSet
 )
 
 app_name = 'market'

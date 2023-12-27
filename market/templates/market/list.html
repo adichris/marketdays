@@ -1,123 +1,135 @@
 {% extends 'base/base.html' %}
 {% load i18n static %}
-{% block  extra_head %}
-    <script src="{% static 'vendor/htmx/htmx.min.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'vendor/jquery/jquery-ui-1.13.2/jquery-ui.css' %}">
-    <script src="{% static 'vendor/jquery/jquery-3.7.1.min.js' %}"></script>
-    <script src="{% static 'vendor/jquery/jquery-ui-1.13.2/jquery-ui.js' %}"></script>
-    <style>
-        .htmx-indicator {
-            display: none;
-        }
+{% block extra_head %}
+<script src="{% static 'vendor/htmx/htmx.min.js' %}"></script>
+<link rel="stylesheet" href="{% static 'vendor/jquery/jquery-ui-1.13.2/jquery-ui.css' %}">
+<script src="{% static 'vendor/jquery/jquery-3.7.1.min.js' %}"></script>
+<script src="{% static 'vendor/jquery/jquery-ui-1.13.2/jquery-ui.js' %}"></script>
+<style>
+    .htmx-indicator {
+        display: none;
+    }
 
-        .htmx-request .htmx-indicator {
-            display: inline;
-        }
+    .htmx-request .htmx-indicator {
+        display: inline;
+    }
 
-        .htmx-request.htmx-indicator {
-            display: inline;
-        }
-    </style>
+    .htmx-request.htmx-indicator {
+        display: inline;
+    }
+</style>
 
-     <script>
-  $( function() {
-    let availableTags = [];
-      $.ajax(
-          {
-              url: '/market/api/markets/',
-              success: function (response) {
-                  for (let i = 0; i < response.length; i++) {
-                      availableTags.push(response[i].town)
-                  }
-                  console.log(availableTags)
-              }
-          }
-    );
-    $( "#tags" ).autocomplete({
-      source: availableTags
-    });
-  } );
-  </script>
 {% endblock %}
 {% block body %}
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 mx-auto my-5">
-                <form method="get" class="p-3 bg-light-subtle rounded">
-                    <h3 class="text-center">{% translate 'Discover Markets' %}</h3>
-                    <input hx-get="{% url 'market:market_list-query' %}" name="q" hx-trigger="keyup changed delay:500ms"
-                           hx-target="#marketlist" title="{% translate 'Search Markets' %}" type="search"
-                           placeholder="{% translate 'Search by name, products' %}"
-                           class="w-100 form-control-color form-control" hx-indicator="loadindicator">
-                    <p class="lead mt-5">Filter</p>
-                    <ul title="Filter Market and Market Item" class="nav nav-tabs" role="tablist">
-                        <li class="nav-item" role="presentation">
-                            <a class="nav-link active" aria-current="page" id="market" href="#" data-bs-toggle="tab"
-                               data-bs-target="market">Markets</a>
-                        </li>
-                        <li class="nav-item" role="presentation" id="marketitem">
-                            <a class="nav-link" href="#" data-bs-toggle="tab" data-bs-target="marketitem">Market Items</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div class="tab-pane active" id="market-tab-pane" role="tabpanel"
-                             aria-labelledby="market-tab" tabindex="0">
-
-<div class="mb-2 ui-widget">
-  <label for="tags" class="form-label">Tags: </label>
-  <input id="tags" class="form-control">
-</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 mx-auto my-5 p-3 bg-light-subtle rounded">
+            <h3 class="text-center">{% translate 'Discover Markets' %}</h3>
+            <form method="get" class="">
+                <input hx-get="{% url 'market:market_list-query' %}" name="q" hx-trigger="keyup changed delay:500ms"
+                    hx-target="#marketlist" title="{% translate 'Search Markets' %}" type="search"
+                    placeholder="{% translate 'Search by name, products' %}"
+                    class="w-100 form-control-color form-control" hx-indicator="loadindicator">
+            </form>
+            <p class="lead mt-5">Filter</p>
+            <ul title="Filter Market and Market Item" class="nav nav-pills mb-3" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button type="button" id="market-tab" class="nav-link active" aria-current="page"
+                        data-bs-toggle="tab" data-bs-target="#market" aria-controls="market"
+                        aria-selected="false">Markets</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button type="button" id="marketitem-tab" class="nav-link" href="#" data-bs-toggle="tab"
+                        data-bs-target="#marketitem" aria-controls="marketitem" aria-selected="false">Market
+                        Items</button>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div id="market" class="tab-pane active" role="tabpanel" aria-labelledby="market-tab" tabindex="0">
+                    <form  hx-get="{% url 'market:market_list-query' %}" hx-target="#marketlist" method="get">
+                        <div class="row row-cols-2 p-2">
+                            <div class="mb-2 ui-widget">
+                                <label for="town" class="form-label">Town: </label>
+                                <input id="town" name="town" class="form-control">
+                            </div>
+                            <div class="mb-2 ui-widget">
+                                <label for="city" class="form-label">City: </label>
+                                <input id="city" name="city" class="form-control">
+                            </div>
+                            <div class="mb-2 ui-widget">
+                                <label for="district" class="form-label">District: </label>
+                                <input id="district" name="district" class="form-control">
+                            </div>
+                            <div class="mb-2 ui-widget">
+                                <label for="region" class="form-label">Region: </label>
+                                <input id="region" name="region" class="form-control">
+                            </div>
                         </div>
-                        <div class="tab-pane fade" id="marketitem-tab-pane" role="tabpanel"
-                             aria-labelledby="marketitem-tab" tabindex="0">
-
-                        </div>
-
-                    </div>
-
-
-                </form>
-            </div>
-        </div>
-
-        <div class="row htmx-indicator" id="loadindicator">
-            <div class="col">
-                <span>
-                    <i class="spinner-border spinner-border-sm"></i>
-
-                    loading ...
-                </span>
-            </div>
-        </div>
-    </div>
-
-
-    <div class="container" id="marketlist">
-        <div class="row mb-5">
-            {% for market in market_list %}
-                <div class="col-11 mx-auto mx-md-0 col-md-6 col-lg-4 space">
-                    <div class="card my-md-4 mb-3 mb-lg-0">
-                        <img src="{{ market.image.url }}" class="card-img-top" alt="{{ market.name }}">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ market.name }}</h5>
-                            <p class="card-text">{{ market.description }}</p>
-                            <a href="{{ market.get_absolute_url }}" class="btn btn-outline-primary">view</a>
-                        </div>
-                        <div class="card-footer">
-                            <small class="text-body-secondary">Last updated {{ market.date_modified|timesince }}
-                                ago</small>
-                        </div>
-                    </div>
+                        <button class="btn btn-info w-100">Search <i class="bi bi-search"></i></button>
+                    </form>
                 </div>
-            {% endfor %}
-        </div>
+                <div id="marketitem" class="tab-pane" role="tabpanel" aria-labelledby="marketitem-tab" tabindex="0">
+                </div>
 
-
-        <div class="row">
-            <div class="col">
-                <a href="{% url 'market:market_create' %}" class="btn btn-outline-primary">Add Market</a>
             </div>
+
         </div>
     </div>
+
+    <div class="row htmx-indicator" id="loadindicator">
+        <div class="col">
+            <span>
+                <i class="spinner-border spinner-border-sm"></i>
+
+                loading ...
+            </span>
+        </div>
+    </div>
+</div>
+
+
+<div class="container" id="marketlist"  hx-get="{% url 'market:market_list-query' %}" hx-target="#marketlist" hx-trigger="load">
+
+</div>
+{% endblock %}
+
+
+{% block extra_js %}
+
+<script>
+    $(function () {
+        let availabletown = [];
+        let availableCity = [];
+        let availableRegion = [];
+        let availableDistrict = [];
+        $.ajax(
+            {
+                url: '/market/api/markets/',
+                success: function (response) {
+                    for (let i = 0; i < response.length; i++) {
+                        availabletown.push(response[i].town);
+                        availableRegion.push(response[i].region);
+                        availableCity.push(response[i].city);
+                        availableDistrict.push(response[i].district);
+                    }
+                }
+            }
+        );
+        $("#town").autocomplete({
+            source: availabletown
+        });
+        $("#city").autocomplete({
+            source: availableCity
+        });
+        $("#region").autocomplete({
+            source: availableRegion
+        });
+        $("#district").autocomplete({
+            source: availableDistrict
+        });
+
+
+    });
+</script>
 {% endblock %}

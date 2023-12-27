@@ -1,0 +1,17 @@
+{% extends 'base/base.html' %}
+{% block body %}
+<main class="container m-auto">
+    <div class="row">
+        <div class="col col-md-6 col-lg-4 my-5 mx-auto">
+            <form method="post" class="text-center">
+                <i class="bi bi-shop mb-4 " style="font-size: 72px;"></i>
+                <h1 class="h3 mb-3 fw-normal">Log Out of the System</h1>
+                {% csrf_token %}
+                <button class="btn btn-warning w-100 py-2" type="submit">Log Out</button>
+            </form>
+        </div>
+    </div>
+
+
+</main>
+{% endblock body %}
