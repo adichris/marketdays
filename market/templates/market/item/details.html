@@ -1,5 +1,8 @@
 {% extends "base/base.html" %}
-
+{% block extra_head %}
+<meta name="keywords" content="{{ market_item.name }}, {{ market_item.type }}">
+<meta name="description" content="{{ market_item.descriptions }}">
+{% endblock %}
 {% block body %}
     <div class="container">
         <div class="row">
