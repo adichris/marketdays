@@ -25,6 +25,7 @@
                 <img src="{{ market_item.image.url }}" alt="{{ market_item.name }}" class="img-fluid rounded" style="max-height: 65vh">
             </div>
             <div class="col-md-6">
+                <a href="{{ market_item.get_absolute_update_url }}" class="btn btn-sm btn-outline-secondary my-3"><i class="bi bi-pencil"></i>  Edit</a>
                 <div class="card">
                       <div class="card-header">
                           <span class="lead">{{ market_item.name }} Details</span>

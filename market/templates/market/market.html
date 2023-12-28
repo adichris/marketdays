@@ -21,6 +21,41 @@
     </div>
 
     <div class="container">
+
+        <div class="row mb-5">
+            <div class="col">
+                <div class="card-group">
+                    <div class="card">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item"><small class="text-muted">Name: </small> {{ market.name }}</li>
+                            {% if market.type %}<li class="list-group-item"><small class="text-muted">Type: </small> {{ market.type }}</li>{% endif %}
+                            <li class="list-group-item"><small class="text-muted">Town: </small> {{ market.town }}</li>
+                            <li class="list-group-item"><small class="text-muted">City: </small> {{ market.city }}</li>
+                            <li class="list-group-item"><small class="text-muted">District: </small> {{ market.district }}</li>
+                            <li class="list-group-item"><small class="text-muted">Region: </small> {{ market.region }}</li>
+                            <li class="list-group-item"><small class="text-muted">Country: </small> {{ market.country }}</li>
+                            <li class="list-group-item">
+                                 <small class="text-muted">Market Queen: </small>
+                                <span>{{ market.market_queen|default:"N/A" }}</span>
+                            </li>
+                        </ul>
+                        <div class="card-footer d-flex flex-column flex-fill">
+                            <span>Update at {{ market.date_modified }} </span>
+                            <span>Created at {{ market.date_created }}</span>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="lead">Description</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">{{ market.description }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
          <div class="row">
             <div class="col">
                 <div class="d-flex justify-content-between align-items-center bg-body-secondary rounded p-2">
