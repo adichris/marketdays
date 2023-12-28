@@ -1,7 +1,11 @@
 {% extends 'base/base.html' %}
 {% block extra_head %}
 <meta name="keywords" content="Market, Ghana, Market Days">
-<meta name="description" content="Market list and summaries">
+<meta name="description" content="{{ market.description }}">
+<meta property="og:title" content="{{ market }}" />
+<meta property="og:url" content="{{ request.build_absolute_uri }}" />
+<meta property="og:description" content="{{ market.description }}" />
+<meta property="og:image" content="{{ image_url }}" />
     <style>
         #mainImg {
             object-fit: cover;

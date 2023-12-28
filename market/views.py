@@ -61,6 +61,7 @@ class MarketDetailView(DetailView):
         ctx = super().get_context_data(**kwargs)
         ctx["title"] = str(self.object)
         ctx["market_items"] = self.object.get_market_items()
+        ctx["image_url"] = self.request.build_absolute_uri(self.object.image.url)
         return ctx
 
 
@@ -174,6 +175,11 @@ class MarketItemDetailView(DetailView):
     slug_field = 'slug'
     slug_url_kwarg = "slug"
     context_object_name = "market_item"
+
+    def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
+        ctx = super().get_context_data(**kwargs)
+        ctx["image_url"] = self.request.build_absolute_uri(self.object.image.url)
+        return ctx
 
 
 class MarketViewSet(viewsets.ModelViewSet):

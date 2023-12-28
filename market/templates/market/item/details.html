@@ -2,6 +2,10 @@
 {% block extra_head %}
 <meta name="keywords" content="{{ market_item.name }}, {{ market_item.type }}">
 <meta name="description" content="{{ market_item.descriptions }}">
+<meta property="og:title" content="{{ market_item }}" />
+<meta property="og:url" content="{{ request.build_absolute_uri }}" />
+<meta property="og:description" content="{{ market_item.descriptions }}" />
+<meta property="og:image" content="{{ image_url }}" />
 {% endblock %}
 {% block body %}
     <div class="container">
