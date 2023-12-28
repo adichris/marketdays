@@ -44,18 +44,18 @@
         {{ wizard.form|crispy }}
         <div class="d-flex flex-row gap-4 align-items-center justify-content-end bg-light-subtle p-2 rounded">
             {% if wizard.steps.prev %}
-                <button hx-encoding="multipart/form-data" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}"
+                <button onclick="animateLoading(this)" hx-encoding="multipart/form-data" name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}"
                         hx-post="{{ submit2 }}" hx-target="#marketCreatesteps"  class="d-inline-flex align-items-center btn btn-outline-secondary justify-content-between flex-row justify-content-center gap-3">
                     <span>{% translate 'First Step' %}</span>
                     <i class="bi bi-1-circle"></i>
                 </button>
-                <button hx-encoding="multipart/form-data" name="wizard_goto_step" type="submit" value="{{ wizard.steps.first }}" hx-post="{{ submit2 }}" hx-target="#marketCreatesteps" class="d-inline-flex align-items-center btn btn-outline-secondary justify-content-between flex-row justify-content-center gap-3">
+                <button onclick="animateLoading(this)" hx-encoding="multipart/form-data" name="wizard_goto_step" type="submit" value="{{ wizard.steps.prev }}" hx-post="{{ submit2 }}" hx-target="#marketCreatesteps" class="d-inline-flex align-items-center btn btn-outline-secondary justify-content-between flex-row justify-content-center gap-3">
                     <span>{% translate 'Back' %}</span>
                     <i class="bi bi-arrow-left"></i>
                 </button>
             {% endif %}
 
-            <button  value="{% translate "submit" %}" hx-encoding="multipart/form-data" hx-post="{{ submit2 }}" type="submit" hx-target="#marketCreatesteps"
+            <button onclick="animateLoading(this)"  value="{% translate "submit" %}" hx-encoding="multipart/form-data" hx-post="{{ submit2 }}" type="submit" hx-target="#marketCreatesteps"
                     class="btn btn-primary gap-2">
                 {% if wizard.steps.last == wizard.steps.current %}
                     {% translate 'Submit' %} <i class="bi bi-send"></i>

@@ -344,3 +344,4 @@ $RECYCLE.BIN/
 /*/migrations/*
 marketdays/local.py
 static/
+market_photos/

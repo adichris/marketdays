@@ -9,7 +9,7 @@ from djmoney.money import Money
 
 
 def upload_location(instance, filename):
-    return os.path.join("media", "market" ,instance._meta.app_label, instance.name, filename)
+    return os.path.join("media", instance._meta.app_label, instance.name, filename)
 
 
 class MarketManager(models.Manager):
